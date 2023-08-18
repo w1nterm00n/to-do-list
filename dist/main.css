@@ -1,0 +1,54 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+	box-shadow: none;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+a{
+	text-decoration: none;
+}
+button{
+	border: 0;
+}
+*{padding:0;margin:0}* body{background:#E4ECFC}* button{min-width:30px;min-height:20px;background-color:inherit;border:none}.page_wrapper{width:100vw;height:100vh;display:flex}.page_wrapper .projects_side{flex:1 1 auto;background-color:#acc4cc}.page_wrapper .projects_side .projects_heading{border:1px solid #000;background:#B49463;display:flex;justify-content:space-between;align-items:center;padding:36px 25px;margin-bottom:50px}.page_wrapper .projects_side .projects_heading h4{color:#000;font-size:32px;font-weight:700}.page_wrapper .projects_side .projects_heading button{color:#000;font-size:32px;font-weight:700;padding:20px;border-radius:10px}.page_wrapper .projects_side .projects_list{display:flex;gap:30px;flex-direction:column}.page_wrapper .projects_side .projects_list .project_list{padding:12px 18px;display:flex;justify-content:space-between;margin-right:20px}.page_wrapper .projects_side .projects_list .project_list .toggle{margin-right:15px}.page_wrapper .projects_side .projects_list .project_list p{color:#000;font-size:24px;font-weight:700}.page_wrapper .projects_side .projects_list .chosen_project{border:1px solid #000;background:#B49463}.page_wrapper .projects_side .projects_list .chosen_project .toggle{background:#B49463;display:flex;justify-content:center;align-items:center}.page_wrapper .main_side{flex:4 1 auto;width:200px;height:200px;padding:36px 82px}.page_wrapper .main_side header{display:flex;justify-content:end;align-items:center;margin-bottom:46px}.page_wrapper .main_side header h2{flex:5 1 auto;display:flex;justify-content:center;width:fit-content;font-size:28px;font-weight:700}.page_wrapper .main_side header .addPurpose{flex:1 1 auto;display:flex;width:max-content;align-items:center}.page_wrapper .main_side header .addPurpose p{display:block;width:fit-content;font-size:20px;font-weight:500}.page_wrapper .main_side header .addPurpose button{color:#000;font-size:32px;font-weight:700;padding:20px;border-radius:10px}.page_wrapper .main_side .to-do-line{background-color:#acc4cc;padding:30px;border-radius:10px;font-size:20px;font-weight:500;margin-bottom:35px}.page_wrapper .main_side .to-do-line .description_and_priority_part{margin-top:20px}.page_wrapper .main_side .to-do-line .description_and_priority_part .description_side{display:flex;gap:10px;margin-bottom:10px}.page_wrapper .main_side .to-do-line .description_and_priority_part .priority_side{display:flex;gap:10px}.page_wrapper .main_side .to-do-line .title_and_deadline_part{display:flex;justify-content:space-between;align-items:center}.page_wrapper .main_side .to-do-line .title_and_deadline_part .left_side{display:flex;gap:30px}.page_wrapper .main_side .to-do-line .title_and_deadline_part .left_side #todo-checkbox{height:25px;width:25px}.page_wrapper .main_side .to-do-line .title_and_deadline_part .right_side{display:flex;gap:30px;align-items:center}.pop-up{display:none;position:absolute;top:150px;left:41vw;border-radius:20px;border:1px solid #000;background:#ACC4CC;padding:25px;width:max-content;flex-direction:column}.pop-up .title_side{display:flex;font-size:24px;font-weight:700;margin-bottom:22px;justify-content:center}.pop-up .title_side .closeBtn{justify-self:end;position:absolute;top:22px;right:20px}.pop-up form{display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative}.pop-up form .title_side{font-size:24px;font-weight:700;display:flex;margin-bottom:22px}.pop-up form .title_side .closeBtn{justify-self:end;position:absolute;top:0;right:0}.pop-up form input{background:#A68B5C;padding:6px 8px;color:#FFF;font-size:24px;font-weight:500;margin-bottom:20px}.pop-up form #submit_btn{border-radius:10px;border:1px solid #000;background:#3B4D3A;padding:10px 43px;color:#FFF;font-size:24px}.pop-up_purpose_window textarea{background-color:#A68B5C;width:100%;margin-top:2px;margin-bottom:20px;font-size:18px}
+
+
+/*# sourceMappingURL=main.css.map*/
