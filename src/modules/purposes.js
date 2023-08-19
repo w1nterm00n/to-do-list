@@ -11,9 +11,8 @@ const purposesCreation = function () {
 	form.addEventListener("submit", function (event) {
 		event.preventDefault();
 		let valueFromForm = formManipulation.serializeForm(form);
-		let purpose = purposeCreation(valueFromForm); //
+		let purpose = purposeCreation(valueFromForm);
 		purposeDOMCreation(purpose);
-		//!!! импортировать ДОМ крэйшн и запустить создание открытой цели
 		formManipulation.hideForm();
 	});
 
@@ -59,9 +58,5 @@ const purposesCreation = function () {
 		}
 		return purpose;
 	};
-
-	//сделать отображение цели (допустим по дефолту цели будут открыты)
 };
 export { purposesCreation };
-
-//цель кладётся в проект, внутри которого она была создана

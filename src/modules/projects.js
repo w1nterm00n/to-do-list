@@ -65,14 +65,43 @@ const projectCreation = function () {
 		toggle.classList.add("toggle");
 		projectList.appendChild(toggle);
 		let toggleImg = document.createElement("img");
+		toggleImg.classList.add("toggle_img");
 		toggleImg.setAttribute("src", "pics/toggle_off.svg");
+		//делаю чтобы только один проект одновременно был активный
 		toggle.addEventListener("click", function () {
-			if (toggleManiplation.isToggleOpen === false) {
+			if (
+				toggleManiplation.isToggleOpen === false &&
+				project.isActive === false
+			) {
 				toggleManiplation.openToggle(toggleImg, projectList, project);
-			} else if (toggleManiplation.isToggleOpen === true) {
+			} else if (
+				toggleManiplation.isToggleOpen === true &&
+				project.isActive === true
+			) {
 				toggleManiplation.closeToggle(toggleImg, projectList, project);
+			} else if (
+				toggleManiplation.isToggleOpen === true &&
+				project.isActive === false
+			) {
+				for (let i = 0; i < sharedData.projects.length; i++) {
+					if (sharedData.projects[i].isActive === true) {
+						sharedData.projects[i].isActive = false;
+
+						let projectList = container.querySelectorAll(".project_list");
+						let toggleImages = container.querySelectorAll(".toggle_img");
+						projectList.forEach((projectList) => {
+							projectList.style.background = "rgba(172, 196, 204, 1)";
+							projectList.style.border = "none";
+						});
+						toggleImages.forEach((image) => {
+							image.setAttribute("src", "pics/toggle_off.svg");
+						});
+					}
+					toggleManiplation.openToggle(toggleImg, projectList, project);
+				}
 			}
 		});
+		//делаю чтобы только один проект одновременно был активный
 		toggle.appendChild(toggleImg);
 
 		let projectName = document.createElement("p");
