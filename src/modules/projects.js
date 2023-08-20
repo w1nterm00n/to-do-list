@@ -125,6 +125,7 @@ const projectCreation = function () {
 			projectList.style.border = "1px solid black";
 			mainSideManipulation.setProjectName(project.name);
 			project.isActive = true;
+			mainSideManipulation.purposeDisplaying(project);
 		},
 		closeToggle(toggleImg, projectList, project) {
 			this.isToggleOpen = false;
@@ -137,6 +138,27 @@ const projectCreation = function () {
 
 	let mainSideManipulation = {
 		projectName: document.getElementById("projectName"),
+		mainSide: document.querySelector(".main_side"),
+
+		purposeDisplaying(project) {
+			let purposeNodelist = this.mainSide.querySelectorAll(".to-do-line");
+			purposeNodelist.forEach((purpose) => {
+				let title = purpose.querySelector("#title_text");
+				if (project.purposes.length === 0) {
+					//when the project is empty, no purposes displaying
+					purpose.style.display = "none";
+				}
+				for (let i = 0; i < project.purposes.length; i++) {
+					if (project.purposes[i].title === title.textContent) {
+						//if purpose with this title exist in this project
+						purpose.style.display = "block";
+						break;
+					} else {
+						purpose.style.display = "none";
+					}
+				}
+			});
+		},
 
 		setProjectName(newProjectName) {
 			this.projectName.textContent = newProjectName;
