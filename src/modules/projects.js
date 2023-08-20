@@ -29,8 +29,7 @@ const projectCreation = function () {
 		submitForm(form) {
 			let valueFromForm = this.serializeForm(form);
 			this.hideForm();
-			let project = new Project(valueFromForm[0].value);
-			projectDOMCreation(project);
+			projectManipulation.createProject(valueFromForm);
 		},
 		serializeForm(formNode) {
 			//обрабатывает значения полей и возвращает массив с значениями
@@ -54,6 +53,34 @@ const projectCreation = function () {
 			sharedData.projects.push(this);
 		}
 	}
+
+	let projectManipulation = {
+		createProject(valueFromForm) {
+			let project = new Project(valueFromForm[0].value);
+			let DOMproject = projectDOMCreation(project);
+			let deleteBtn = DOMproject.querySelector(".trash");
+			deleteBtn.addEventListener("click", function () {
+				projectManipulation.deleteProject(project, DOMproject);
+			});
+		},
+		deleteProject(project, DOMproject) {
+			for (let i = 0; i < sharedData.projects.length; i++) {
+				if (sharedData.projects[i] == project) {
+					sharedData.projects.splice(i, 1); //удаляю проект и его содержимое из массива
+				}
+			}
+			let parentNode = document.querySelector(".projects_list");
+			parentNode.removeChild(DOMproject); //удаление ДОМ-элемента с проектом
+			projectName.textContent = "deleted project";
+			//удаляются нодлисты его целей :
+			let mainSide = document.querySelector(".main_side");
+			let purposesNodelist = mainSide.querySelectorAll(".to-do-line");
+			purposesNodelist.forEach((purposeNode) => {
+				if (purposeNode.style.display === "block")
+					mainSide.removeChild(purposeNode);
+			});
+		},
+	};
 
 	let projectDOMCreation = function (project) {
 		let container = document.querySelector(".projects_list");
@@ -114,6 +141,7 @@ const projectCreation = function () {
 		let trashImg = document.createElement("img");
 		trashImg.setAttribute("src", "pics/trash.svg");
 		trash.appendChild(trashImg);
+		return projectList;
 	};
 
 	let toggleManiplation = {
@@ -167,3 +195,4 @@ const projectCreation = function () {
 };
 
 export { projectCreation };
+//добавить удаление проекта
