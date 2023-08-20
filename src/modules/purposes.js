@@ -12,7 +12,8 @@ const purposesCreation = function () {
 		event.preventDefault();
 		let valueFromForm = formManipulation.serializeForm(form);
 		let purpose = purposeCreation(valueFromForm);
-		purposeDOMCreation(purpose);
+		let DOMpurpose = purposeDOMCreation(purpose);
+		purposeDelete(DOMpurpose, purpose);
 		formManipulation.hideForm();
 	});
 
@@ -49,14 +50,31 @@ const purposesCreation = function () {
 		purpose.deadline = arr[1].value;
 		purpose.details = arr[2].value;
 		purpose.priority = arr[3].value;
-		// console.log(sharedData.projects);
 		for (let i = 0; i < sharedData.projects.length; i++) {
 			if (sharedData.projects[i].isActive == true) {
 				sharedData.projects[i].purposes.push(purpose);
-				console.log(sharedData.projects);
 			}
 		}
 		return purpose;
+	};
+
+	let purposeDelete = function (DOMpurpose, purpose) {
+		//DOMpurpose - это ДОМ элемент этой цели
+		//purpose - это объект с целью
+		let mainSide = document.querySelector(".main_side");
+		let deleteBtn = DOMpurpose.querySelector(".trash");
+		deleteBtn.addEventListener("click", function () {
+			mainSide.removeChild(DOMpurpose); //удаляю ДОМ-узел цели
+			for (let i = 0; i < sharedData.projects.length; i++) {
+				if (sharedData.projects[i].isActive == true) {
+					let index = sharedData.projects[i].purposes.indexOf(purpose);
+					if (index !== -1) {
+						sharedData.projects[i].purposes.splice(index, 1); //удаляю цель из массива
+					}
+				}
+			}
+			console.log(sharedData.projects);
+		});
 	};
 };
 export { purposesCreation };

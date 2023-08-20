@@ -59,6 +59,7 @@ let purposeDOMCreation = function (purpose) {
 		fullPart.style.display = "none";
 		toggleImg.setAttribute("src", "pics/toggle_off.svg");
 	}
+	return newGoal;
 };
 
 //добавить сюда ДОМ создание проекта
