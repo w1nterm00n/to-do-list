@@ -14,6 +14,10 @@ const purposesCreation = function () {
 		let purpose = purposeCreation(valueFromForm);
 		let DOMpurpose = purposeDOMCreation(purpose);
 		purposeDelete(DOMpurpose, purpose);
+		let checkbox = DOMpurpose.querySelector("#todo-checkbox");
+		checkbox.addEventListener("click", function () {
+			checkboxManipulation(DOMpurpose, purpose);
+		});
 		formManipulation.hideForm();
 	});
 
@@ -56,6 +60,20 @@ const purposesCreation = function () {
 			}
 		}
 		return purpose;
+	};
+
+	//чтобы при нажатии на чекбокс цели текст становился серым
+	let checkboxManipulation = function (DOMpurpose, purpose) {
+		let titleText = DOMpurpose.querySelector("#title_text");
+		if (purpose.isDone === false) {
+			titleText.style.color = "grey";
+			titleText.style.textDecoration = "line-through";
+			purpose.isDone = true;
+		} else {
+			purpose.isDone = false;
+			titleText.style.color = "black";
+			titleText.style.textDecoration = "none";
+		}
 	};
 
 	let purposeDelete = function (DOMpurpose, purpose) {

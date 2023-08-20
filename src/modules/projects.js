@@ -195,4 +195,3 @@ const projectCreation = function () {
 };
 
 export { projectCreation };
-//добавить удаление проекта
