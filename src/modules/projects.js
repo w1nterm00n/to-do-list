@@ -80,6 +80,16 @@ const projectCreation = function () {
 					mainSide.removeChild(purposeNode);
 			});
 		},
+		defaultProjectCreation() {
+			this.createProject([{ value: "Default project" }]);
+			let projectList = document.querySelector(".project_list");
+			let toggleImg = projectList.querySelector(".toggle");
+			toggleManiplation.openToggle(
+				toggleImg,
+				projectList,
+				sharedData.projects[0]
+			);
+		},
 	};
 
 	let projectDOMCreation = function (project) {
@@ -192,6 +202,8 @@ const projectCreation = function () {
 			this.projectName.textContent = newProjectName;
 		},
 	};
+
+	projectManipulation.defaultProjectCreation();
 };
 
 export { projectCreation };
