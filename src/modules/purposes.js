@@ -4,19 +4,35 @@ import { purposeDOMCreation } from "./DOMCreation.js";
 const purposesCreation = function () {
 	let addPurposeBtn = document.querySelector(".addPurposeBtn");
 	addPurposeBtn.addEventListener("click", function () {
-		formManipulation.showForm();
+		formManipulation.showEmptyForm();
 	});
 
 	let form = document.getElementById("purposeForm");
 	form.addEventListener("submit", function (event) {
 		event.preventDefault();
+		let purpose;
 		let valueFromForm = formManipulation.serializeForm(form);
-		let purpose = purposeCreation(valueFromForm);
-		let DOMpurpose = purposeDOMCreation(purpose);
-		purposeDelete(DOMpurpose, purpose);
-		let checkbox = DOMpurpose.querySelector("#todo-checkbox");
+
+		if (currentPurpose) {
+			purpose = currentPurpose;
+			//удалила прошлый ДОМ-узел
+			let mainSide = document.querySelector(".main_side");
+			mainSide.removeChild(purpose.DOM);
+			//удалила прошлый ДОМ-узел
+			let updatedPurpose = purposeUpdate(currentPurpose, valueFromForm);
+			purpose.DOM = purposeDOMCreation(updatedPurpose); // создаст новый ДОМ-узел
+			console.log(sharedData.projects); //значения в объекте цели изменились
+			currentPurpose = null;
+		} else {
+			purpose = purposeCreation(valueFromForm);
+			purpose.DOM = purposeDOMCreation(purpose);
+		}
+
+		purposeDelete(purpose);
+		purposeChange(purpose);
+		let checkbox = purpose.DOM.querySelector("#todo-checkbox");
 		checkbox.addEventListener("click", function () {
-			checkboxManipulation(DOMpurpose, purpose);
+			checkboxManipulation(purpose);
 		});
 		formManipulation.hideForm();
 	});
@@ -26,13 +42,28 @@ const purposesCreation = function () {
 		formManipulation.hideForm();
 	});
 
+	let formWrapper = document.querySelector(".pop-up_purpose_window");
+	let currentPurpose = null;
 	let formManipulation = {
-		formWrapper: document.querySelector(".pop-up_purpose_window"),
-		showForm() {
-			this.formWrapper.style.display = "flex";
+		title: formWrapper.querySelector(".title"),
+		submitBtn: formWrapper.querySelector("#submit_btn"),
+		formNodelist: formWrapper.querySelectorAll(".input"),
+		showEmptyForm() {
+			this.title.textContent = "New Form";
+			this.submitBtn.textContent = "Add";
+			this.formNodelist.forEach(function (input) {
+				input.value = "";
+			});
+			formWrapper.style.display = "flex";
+		},
+		showFilledForm(purpose) {
+			currentPurpose = purpose;
+			this.title.textContent = "Change Form";
+			this.submitBtn.textContent = "Change";
+			formWrapper.style.display = "flex";
 		},
 		hideForm() {
-			this.formWrapper.style.display = "none";
+			formWrapper.style.display = "none";
 		},
 		serializeForm(formNode) {
 			const { elements } = formNode;
@@ -54,6 +85,7 @@ const purposesCreation = function () {
 		purpose.deadline = arr[1].value;
 		purpose.details = arr[2].value;
 		purpose.priority = arr[3].value;
+		purpose.DOM = "";
 		for (let i = 0; i < sharedData.projects.length; i++) {
 			if (sharedData.projects[i].isActive == true) {
 				sharedData.projects[i].purposes.push(purpose);
@@ -63,8 +95,8 @@ const purposesCreation = function () {
 	};
 
 	//чтобы при нажатии на чекбокс цели текст становился серым
-	let checkboxManipulation = function (DOMpurpose, purpose) {
-		let titleText = DOMpurpose.querySelector("#title_text");
+	let checkboxManipulation = function (purpose) {
+		let titleText = purpose.DOM.querySelector("#title_text");
 		if (purpose.isDone === false) {
 			titleText.style.color = "grey";
 			titleText.style.textDecoration = "line-through";
@@ -76,13 +108,13 @@ const purposesCreation = function () {
 		}
 	};
 
-	let purposeDelete = function (DOMpurpose, purpose) {
+	let purposeDelete = function (purpose) {
 		//DOMpurpose - это ДОМ элемент этой цели
 		//purpose - это объект с целью
 		let mainSide = document.querySelector(".main_side");
-		let deleteBtn = DOMpurpose.querySelector(".trash");
+		let deleteBtn = purpose.DOM.querySelector(".trash");
 		deleteBtn.addEventListener("click", function () {
-			mainSide.removeChild(DOMpurpose); //удаляю ДОМ-узел цели
+			mainSide.removeChild(purpose.DOM); //удаляю ДОМ-узел цели
 			for (let i = 0; i < sharedData.projects.length; i++) {
 				if (sharedData.projects[i].isActive == true) {
 					let index = sharedData.projects[i].purposes.indexOf(purpose);
@@ -92,6 +124,22 @@ const purposesCreation = function () {
 				}
 			}
 			console.log(sharedData.projects);
+		});
+	};
+
+	let purposeUpdate = function (currentPurpose, arr) {
+		currentPurpose.title = arr[0].value;
+		currentPurpose.deadline = arr[1].value;
+		currentPurpose.details = arr[2].value;
+		currentPurpose.priority = arr[3].value;
+
+		return currentPurpose;
+	};
+
+	let purposeChange = function (purpose) {
+		let changeBtn = purpose.DOM.querySelector(".change");
+		changeBtn.addEventListener("click", function () {
+			formManipulation.showFilledForm(purpose);
 		});
 	};
 };
