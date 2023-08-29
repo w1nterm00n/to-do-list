@@ -90,6 +90,18 @@ const projectCreation = function () {
 			for (let i = 0; i < sharedData.projects.length; i++) {
 				if (sharedData.projects[i] == project) {
 					sharedData.projects.splice(i, 1); //удаляю проект и его содержимое из массива
+
+					//УДАЛЕНИЕ ИЗ LOCALSTORAGE
+					var projectsStorage = localStorage.getItem("projects");
+					var projects = JSON.parse(projectsStorage);
+					projects.forEach(function (storageProject) {
+						if (deepEqualObjects(project, storageProject)) {
+							let index = projects.indexOf(storageProject);
+							projects.splice(index, 1);
+							localStorage.setItem("projects", JSON.stringify(projects));
+						}
+					});
+					//УДАЛЕНИЕ ИЗ LOCALSTORAGE
 				}
 			}
 			let parentNode = document.querySelector(".projects_list");
