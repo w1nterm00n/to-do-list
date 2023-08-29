@@ -161,11 +161,26 @@ const purposesCreation = function () {
 	};
 
 	let purposeUpdate = function (currentPurpose, arr) {
+		//изменение цели в LOCALSTORAGE
+		var projectsStorage = localStorage.getItem("projects");
+		var projects = JSON.parse(projectsStorage);
+		projects.forEach(function (storageProject) {
+			storageProject.purposes.forEach(function (storagePurpose) {
+				if (deepEqualObjects(storagePurpose, currentPurpose)) {
+					storagePurpose.title = arr[0].value;
+					storagePurpose.deadline = arr[1].value;
+					storagePurpose.details = arr[2].value;
+					storagePurpose.priority = arr[3].value;
+					localStorage.setItem("projects", JSON.stringify(projects));
+				}
+			});
+		});
+		//изменение цели в LOCALSTORAGE
+
 		currentPurpose.title = arr[0].value;
 		currentPurpose.deadline = arr[1].value;
 		currentPurpose.details = arr[2].value;
 		currentPurpose.priority = arr[3].value;
-
 		return currentPurpose;
 	};
 
