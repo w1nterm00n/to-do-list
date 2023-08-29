@@ -1,5 +1,6 @@
 import { sharedData } from "./sharedData.js";
 import { purposeDOMCreation } from "./DOMCreation.js";
+import { deepEqualObjects } from "./storage.js";
 
 const purposesCreation = function () {
 	let addPurposeBtn = document.querySelector(".addPurposeBtn");
@@ -92,41 +93,10 @@ const purposesCreation = function () {
 			if (sharedData.projects[i].isActive == true) {
 				sharedData.projects[i].purposes.push(purpose);
 
-				//сделать чтобы цель добавлялась в localStorage
-
 				var projectsStorage = localStorage.getItem("projects");
-				var projects = JSON.parse(projectsStorage); //projects - JS объект соответствующий "projects"
-
+				var projects = JSON.parse(projectsStorage);
 				projects.forEach(function (project) {
-					function deepEqual(obj1, obj2) {
-						const keys1 = Object.keys(obj1);
-						const keys2 = Object.keys(obj2);
-
-						if (keys1.length !== keys2.length) {
-							return false;
-						}
-
-						for (const key of keys1) {
-							if (
-								key !== "isActive" &&
-								key !== "purposes" &&
-								typeof obj1[key] === "object" &&
-								typeof obj2[key] === "object"
-							) {
-								if (!deepEqual(obj1[key], obj2[key])) {
-									return false;
-								}
-							} else if (
-								key !== "isActive" &&
-								key !== "purposes" &&
-								obj1[key] !== obj2[key]
-							) {
-								return false;
-							}
-						}
-						return true;
-					}
-					if (deepEqual(project, sharedData.projects[i])) {
+					if (deepEqualObjects(project, sharedData.projects[i])) {
 						let projectIndex = projects.findIndex((proj) => proj === project);
 						//добавляю цель в нужный проект, обновляю localStorage
 						if (projectIndex !== -1) {
