@@ -86,11 +86,58 @@ const purposesCreation = function () {
 		purpose.details = arr[2].value;
 		purpose.priority = arr[3].value;
 		purpose.DOM = "";
+
+		//ДОБАВЛЕНИЕ PURPOSE В LOCALSTORAGE
 		for (let i = 0; i < sharedData.projects.length; i++) {
 			if (sharedData.projects[i].isActive == true) {
 				sharedData.projects[i].purposes.push(purpose);
+
+				//сделать чтобы цель добавлялась в localStorage
+
+				var projectsStorage = localStorage.getItem("projects");
+				var projects = JSON.parse(projectsStorage); //projects - JS объект соответствующий "projects"
+
+				projects.forEach(function (project) {
+					function deepEqual(obj1, obj2) {
+						const keys1 = Object.keys(obj1);
+						const keys2 = Object.keys(obj2);
+
+						if (keys1.length !== keys2.length) {
+							return false;
+						}
+
+						for (const key of keys1) {
+							if (
+								key !== "isActive" &&
+								key !== "purposes" &&
+								typeof obj1[key] === "object" &&
+								typeof obj2[key] === "object"
+							) {
+								if (!deepEqual(obj1[key], obj2[key])) {
+									return false;
+								}
+							} else if (
+								key !== "isActive" &&
+								key !== "purposes" &&
+								obj1[key] !== obj2[key]
+							) {
+								return false;
+							}
+						}
+						return true;
+					}
+					if (deepEqual(project, sharedData.projects[i])) {
+						let projectIndex = projects.findIndex((proj) => proj === project);
+						//добавляю цель в нужный проект, обновляю localStorage
+						if (projectIndex !== -1) {
+							projects[projectIndex].purposes.push(purpose);
+							localStorage.setItem("projects", JSON.stringify(projects));
+						}
+					}
+				});
 			}
 		}
+		//ДОБАВЛЕНИЕ PURPOSE В LOCALSTORAGE
 		return purpose;
 	};
 

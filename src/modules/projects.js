@@ -51,6 +51,46 @@ const projectCreation = function () {
 			this.isActive = false;
 			this.purposes = []; // массив для хранения целей проекта
 			sharedData.projects.push(this);
+
+			//проверить существует ли в локал стораге такой объект - если да - мимо, если нет - добавляем
+			var projectsStorage = localStorage.getItem("projects");
+			var projects = JSON.parse(projectsStorage);
+			var self = this;
+			var addProject = true;
+			//смотрю, есть ли уже этот проект в хранилище
+			projects.forEach(function (project) {
+				function deepEqual(obj1, obj2) {
+					const keys1 = Object.keys(obj1);
+					const keys2 = Object.keys(obj2);
+					if (keys1.length !== keys2.length) {
+						return false;
+					}
+					for (const key of keys1) {
+						if (
+							typeof obj1[key] === "object" &&
+							typeof obj2[key] === "object"
+						) {
+							if (!deepEqual(obj1[key], obj2[key])) {
+								return false;
+							}
+						} else if (obj1[key] !== obj2[key]) {
+							return false;
+						}
+					}
+					return true;
+				}
+				if (deepEqual(project, self)) {
+					addProject = false;
+				}
+			});
+			//смотрю, есть ли уже этот проект в хранилище
+
+			if (addProject) {
+				projects.push(this);
+				alert("I will add to storage", this.name);
+			}
+			var updatedProjectsStorage = JSON.stringify(projects);
+			localStorage.setItem("projects", updatedProjectsStorage);
 		}
 	}
 

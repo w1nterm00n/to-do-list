@@ -10,3 +10,5 @@ purposesCreation();
 
 import { sharedData } from "./sharedData.js";
 console.log(sharedData.projects);
+
+//localStorage.removeItem("projects");
