@@ -21,6 +21,7 @@ const deepEqualObjects = function (obj1, obj2) {
 		if (
 			key !== "isActive" &&
 			key !== "purposes" &&
+			key !== "DOM" &&
 			typeof obj1[key] === "object" &&
 			typeof obj2[key] === "object"
 		) {
@@ -30,6 +31,7 @@ const deepEqualObjects = function (obj1, obj2) {
 		} else if (
 			key !== "isActive" &&
 			key !== "purposes" &&
+			key !== "DOM" &&
 			obj1[key] !== obj2[key]
 		) {
 			return false;

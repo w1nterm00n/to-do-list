@@ -137,6 +137,22 @@ const purposesCreation = function () {
 					let index = sharedData.projects[i].purposes.indexOf(purpose);
 					if (index !== -1) {
 						sharedData.projects[i].purposes.splice(index, 1); //удаляю цель из массива
+						//УДАЛЕНИЕ ЦЕЛИ ИЗ ЛОКАЛСТОРАГЕ
+						var projectsStorage = localStorage.getItem("projects");
+						var projects = JSON.parse(projectsStorage);
+						projects.forEach(function (project) {
+							if (deepEqualObjects(project, sharedData.projects[i])) {
+								//нашла совпадающий проект +
+								project.purposes.forEach(function (storagePurpose) {
+									if (deepEqualObjects(storagePurpose, purpose)) {
+										//нашла совпавшую цель +
+										project.purposes.splice(index, 1); //yaay, она удаляется
+									}
+								});
+								localStorage.setItem("projects", JSON.stringify(projects));
+							}
+						});
+						//УДАЛЕНИЕ ЦЕЛИ ИЗ ЛОКАЛСТОРАГЕ
 					}
 				}
 			}
