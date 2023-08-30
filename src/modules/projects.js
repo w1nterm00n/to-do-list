@@ -1,4 +1,4 @@
-import { sharedData } from "./sharedData.js";
+import { sharedData, checkDisplay } from "./sharedData.js";
 import { deepEqualObjects } from "./storage.js";
 
 const projectCreation = function () {
@@ -69,7 +69,6 @@ const projectCreation = function () {
 
 			if (addProject) {
 				projects.push(this);
-				alert("I will add to storage", this.name);
 			}
 			var updatedProjectsStorage = JSON.stringify(projects);
 			localStorage.setItem("projects", updatedProjectsStorage);
@@ -117,6 +116,7 @@ const projectCreation = function () {
 		},
 		defaultProjectCreation() {
 			this.createProject([{ value: "Default project" }]);
+			console.log("creation of default");
 			let projectList = document.querySelector(".project_list");
 			let toggleImg = projectList.querySelector(".toggle");
 			toggleManiplation.openToggle(
@@ -124,6 +124,13 @@ const projectCreation = function () {
 				projectList,
 				sharedData.projects[0]
 			);
+			if (!localStorage.getItem("projects")) {
+				//т.е. если "projects" в localStorage не существует - создаём "projects", чтобы не возникало бед
+				var projectsStorage = JSON.stringify(sharedData.projects);
+				localStorage.setItem("projects", projectsStorage);
+				console.log("creation of storage");
+			}
+			checkDisplay();
 		},
 	};
 
