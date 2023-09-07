@@ -9,18 +9,15 @@ const checkDisplay = function () {
 	var projectsStorage = localStorage.getItem("projects");
 	var storageProjects = JSON.parse(projectsStorage);
 
-	storageProjects.forEach(function (storageProject) {
-		for (let i = 0; i < sharedDataProjects.length; i++) {
-			if (deepEqualObjects(storageProject, sharedDataProjects[i])) {
-				console.log(storageProject, " and ", sharedDataProjects, " equal");
-			} else if (i == sharedDataProjects.length - 1) {
-				sharedData.projects.push(storageProject);
-				projectCreation.projectDOMCreation(storageProject); //походу я хочу получить её раньше, чем она создана
-				//здесь нужно будет использовать projectDOMCreation(storageProject)
-			}
-		}
-	});
-	console.log("sharedData proj: ", sharedData.projects);
+	let DOMCreation = {
+		//здесь будет создание ДОМ проектов
+		//здесь будет создание ДОМ целей
+	};
+
+	//каждый раз когда загружается страница, мы чекаем localStorage, и делаем отображение на экране соответствующим localStorage
+	//на default Project пока забей, потом я уберу его автоматическое создание на экране (но по дефолту он будет находиться в стораге)
+
+	//отображаем все проекты из storageProjects (создаём их DOM-элементы)
 };
 
 export { checkDisplay };

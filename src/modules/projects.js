@@ -1,5 +1,6 @@
-import { sharedData, checkDisplay } from "./sharedData.js";
+import { sharedData } from "./sharedData.js";
 import { deepEqualObjects } from "./storage.js";
+import { purposeDOMCreation } from "./DOMCreation.js";
 
 const projectCreation = function () {
 	let addProjectBtn = document.querySelector(".addProjectBtn");
@@ -116,7 +117,6 @@ const projectCreation = function () {
 		},
 		defaultProjectCreation() {
 			this.createProject([{ value: "Default project" }]);
-			console.log("creation of default");
 			let projectList = document.querySelector(".project_list");
 			let toggleImg = projectList.querySelector(".toggle");
 			toggleManiplation.openToggle(
@@ -128,9 +128,34 @@ const projectCreation = function () {
 				//т.е. если "projects" в localStorage не существует - создаём "projects", чтобы не возникало бед
 				var projectsStorage = JSON.stringify(sharedData.projects);
 				localStorage.setItem("projects", projectsStorage);
-				console.log("creation of storage");
 			}
-			checkDisplay();
+			//вот тут будет создание проектов из localStorage
+		},
+		creationOfStorageProjects() {
+			var projectsStorage = localStorage.getItem("projects");
+			var storageProjects = JSON.parse(projectsStorage);
+			console.log("is dere are projects?", sharedData);
+			storageProjects.forEach(function (proj) {
+				projectManipulation.createProject([{ value: proj.name }]);
+				let projectList = document.querySelector(".project_list");
+				let toggleImg = projectList.querySelector(".toggle");
+				let sharedDataProj = {};
+				sharedData.projects.forEach(function (SDproject) {
+					if (deepEqualObjects(SDproject, proj)) {
+						sharedDataProj = SDproject;
+					}
+				});
+				proj.purposes.forEach(function (purpose) {
+					//помещаю в sharedData цели из localStorage
+					sharedDataProj.purposes.push(purpose);
+					console.log("is there purposes... ", sharedData.projects);
+					purposeDOMCreation(purpose);
+					//нужно чтобы к целям применялось удаление и изменение
+				});
+				toggleManiplation.openToggle(toggleImg, projectList, proj);
+			});
+
+			//разобраться чё с defaultProjectCreation
 		},
 	};
 
@@ -206,6 +231,7 @@ const projectCreation = function () {
 			mainSideManipulation.setProjectName(project.name);
 			project.isActive = true;
 			mainSideManipulation.purposeDisplaying(project);
+			//каждый раз при клике на тоггл должны отображаться цели
 		},
 		closeToggle(toggleImg, projectList, project) {
 			this.isToggleOpen = false;
@@ -229,12 +255,25 @@ const projectCreation = function () {
 					purpose.style.display = "none";
 				}
 				for (let i = 0; i < project.purposes.length; i++) {
+					console.log(
+						" цели внутри ",
+						project.name,
+						" проекта: ",
+						project.purposes
+					);
 					if (project.purposes[i].title === title.textContent) {
 						//if purpose with this title exist in this project
 						purpose.style.display = "block";
+						console.log("yayy");
 						break;
 					} else {
 						purpose.style.display = "none";
+						console.log(
+							project.purposes[i].title,
+							" and ",
+							title.textContent,
+							" not yayy"
+						);
 					}
 				}
 			});
@@ -245,7 +284,8 @@ const projectCreation = function () {
 		},
 	};
 
-	projectManipulation.defaultProjectCreation();
+	//projectManipulation.defaultProjectCreation();
+	projectManipulation.creationOfStorageProjects();
 };
 
 export { projectCreation };
