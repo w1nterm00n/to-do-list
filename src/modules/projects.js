@@ -1,6 +1,6 @@
 import { sharedData } from "./sharedData.js";
-import { deepEqualObjects } from "./storage.js";
 import { purposeDOMCreation } from "./DOMCreation.js";
+import { deepEqualObjects } from "./storage.js";
 
 const projectCreation = function () {
 	let addProjectBtn = document.querySelector(".addProjectBtn");
@@ -134,7 +134,6 @@ const projectCreation = function () {
 		creationOfStorageProjects() {
 			var projectsStorage = localStorage.getItem("projects");
 			var storageProjects = JSON.parse(projectsStorage);
-			console.log("is dere are projects?", sharedData);
 			storageProjects.forEach(function (proj) {
 				projectManipulation.createProject([{ value: proj.name }]);
 				let projectList = document.querySelector(".project_list");
@@ -148,9 +147,45 @@ const projectCreation = function () {
 				proj.purposes.forEach(function (purpose) {
 					//помещаю в sharedData цели из localStorage
 					sharedDataProj.purposes.push(purpose);
-					console.log("is there purposes... ", sharedData.projects);
-					purposeDOMCreation(purpose);
-					//нужно чтобы к целям применялось удаление и изменение
+					purpose.DOM = purposeDOMCreation(purpose);
+					//добавить возможность изменения цели
+					function DeletePurpose(purpose) {
+						//DOMpurpose - это ДОМ элемент этой цели
+						//purpose - это объект с целью
+						let mainSide = document.querySelector(".main_side");
+						let deleteBtn = purpose.DOM.querySelector(".trash");
+						deleteBtn.addEventListener("click", function () {
+							mainSide.removeChild(purpose.DOM); //удаляю ДОМ-узел цели
+							for (let i = 0; i < sharedData.projects.length; i++) {
+								if (sharedData.projects[i].isActive == true) {
+									let index = sharedData.projects[i].purposes.indexOf(purpose);
+									if (index !== -1) {
+										sharedData.projects[i].purposes.splice(index, 1); //удаляю цель из массива
+										//УДАЛЕНИЕ ЦЕЛИ ИЗ ЛОКАЛСТОРАГЕ
+										var projectsStorage = localStorage.getItem("projects");
+										var projects = JSON.parse(projectsStorage);
+										projects.forEach(function (project) {
+											if (deepEqualObjects(project, sharedData.projects[i])) {
+												//нашла совпадающий проект +
+												project.purposes.forEach(function (storagePurpose) {
+													if (deepEqualObjects(storagePurpose, purpose)) {
+														//нашла совпавшую цель +
+														project.purposes.splice(index, 1); //yaay, она удаляется
+													}
+												});
+												localStorage.setItem(
+													"projects",
+													JSON.stringify(projects)
+												);
+											}
+										});
+										//УДАЛЕНИЕ ЦЕЛИ ИЗ ЛОКАЛСТОРАГЕ
+									}
+								}
+							}
+						});
+					}
+					DeletePurpose(purpose);
 				});
 				toggleManiplation.openToggle(toggleImg, projectList, proj);
 			});
@@ -255,25 +290,12 @@ const projectCreation = function () {
 					purpose.style.display = "none";
 				}
 				for (let i = 0; i < project.purposes.length; i++) {
-					console.log(
-						" цели внутри ",
-						project.name,
-						" проекта: ",
-						project.purposes
-					);
 					if (project.purposes[i].title === title.textContent) {
 						//if purpose with this title exist in this project
 						purpose.style.display = "block";
-						console.log("yayy");
 						break;
 					} else {
 						purpose.style.display = "none";
-						console.log(
-							project.purposes[i].title,
-							" and ",
-							title.textContent,
-							" not yayy"
-						);
 					}
 				}
 			});
