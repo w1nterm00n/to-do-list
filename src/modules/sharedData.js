@@ -2,6 +2,7 @@ import { deepEqualObjects } from "./storage.js";
 import { projectCreation } from "./projects.js";
 export const sharedData = {
 	projects: [],
+	currentPurpose: null,
 };
 
 const checkDisplay = function () {

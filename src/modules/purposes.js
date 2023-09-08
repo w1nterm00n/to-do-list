@@ -14,17 +14,17 @@ const purposesCreation = function () {
 		let purpose;
 		let valueFromForm = formManipulation.serializeForm(form);
 
-		if (currentPurpose) {
+		if (sharedData.currentPurpose) {
 			//возможно проблема тут!!!!
-			purpose = currentPurpose;
+			purpose = sharedData.currentPurpose;
 			//удалила прошлый ДОМ-узел
 			let mainSide = document.querySelector(".main_side");
 			mainSide.removeChild(purpose.DOM);
 			//удалила прошлый ДОМ-узел
-			let updatedPurpose = purposeUpdate(currentPurpose, valueFromForm);
+			let updatedPurpose = purposeUpdate(valueFromForm);
 			purpose.DOM = purposeDOMCreation(updatedPurpose); // создаст новый ДОМ-узел
 			console.log(sharedData.projects); //значения в объекте цели изменились
-			currentPurpose = null;
+			sharedData.currentPurpose = null;
 		} else {
 			console.log("ohh i messed here!");
 			purpose = purposeCreation(valueFromForm);
@@ -46,7 +46,7 @@ const purposesCreation = function () {
 	});
 
 	let formWrapper = document.querySelector(".pop-up_purpose_window");
-	let currentPurpose = null;
+	sharedData.currentPurpose = null;
 	let formManipulation = {
 		title: formWrapper.querySelector(".title"),
 		submitBtn: formWrapper.querySelector("#submit_btn"),
@@ -60,7 +60,7 @@ const purposesCreation = function () {
 			formWrapper.style.display = "flex";
 		},
 		showFilledForm(purpose) {
-			currentPurpose = purpose;
+			sharedData.currentPurpose = purpose;
 			this.title.textContent = "Change Form";
 			this.submitBtn.textContent = "Change";
 			formWrapper.style.display = "flex";
@@ -161,13 +161,13 @@ const purposesCreation = function () {
 		});
 	};
 
-	let purposeUpdate = function (currentPurpose, arr) {
+	let purposeUpdate = function (arr) {
 		//изменение цели в LOCALSTORAGE
 		var projectsStorage = localStorage.getItem("projects");
 		var projects = JSON.parse(projectsStorage);
 		projects.forEach(function (storageProject) {
 			storageProject.purposes.forEach(function (storagePurpose) {
-				if (deepEqualObjects(storagePurpose, currentPurpose)) {
+				if (deepEqualObjects(storagePurpose, sharedData.currentPurpose)) {
 					storagePurpose.title = arr[0].value;
 					storagePurpose.deadline = arr[1].value;
 					storagePurpose.details = arr[2].value;
@@ -178,11 +178,11 @@ const purposesCreation = function () {
 		});
 		//изменение цели в LOCALSTORAGE
 
-		currentPurpose.title = arr[0].value;
-		currentPurpose.deadline = arr[1].value;
-		currentPurpose.details = arr[2].value;
-		currentPurpose.priority = arr[3].value;
-		return currentPurpose;
+		sharedData.currentPurpose.title = arr[0].value;
+		sharedData.currentPurpose.deadline = arr[1].value;
+		sharedData.currentPurpose.details = arr[2].value;
+		sharedData.currentPurpose.priority = arr[3].value;
+		return sharedData.currentPurpose;
 	};
 
 	let purposeChange = function (purpose) {
