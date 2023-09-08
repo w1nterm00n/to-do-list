@@ -78,7 +78,6 @@ const projectCreation = function () {
 	}
 
 	let purposesManipulation = {
-		currentPurpose: null,
 		deletePurpose(purpose) {
 			//DOMpurpose - это ДОМ элемент этой цели
 			//purpose - это объект с целью
@@ -114,11 +113,11 @@ const projectCreation = function () {
 		},
 		changePurpose(purpose) {
 			let changeBtn = purpose.DOM.querySelector(".change");
-			this.currentPurpose = purpose;
+
 			changeBtn.addEventListener("click", function () {
 				let purposeWindow = document.querySelector(".pop-up_purpose_window");
-
 				purposeWindow.style.display = "flex";
+				sharedData.currentPurpose = purpose;
 			});
 		},
 	};
@@ -199,8 +198,6 @@ const projectCreation = function () {
 				});
 				toggleManiplation.openToggle(toggleImg, projectList, proj);
 			});
-
-			//разобраться чё с defaultProjectCreation
 		},
 	};
 

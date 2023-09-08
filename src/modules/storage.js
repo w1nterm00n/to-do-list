@@ -4,7 +4,6 @@ if (!localStorage.getItem("projects")) {
 	//т.е. если "projects" в localStorage не существует - создаём "projects"
 	var projectsStorage = JSON.stringify([]);
 	localStorage.setItem("projects", projectsStorage);
-	console.log("creation of storage");
 }
 
 //localStorage.removeItem("projects");
