@@ -19,7 +19,7 @@ const projectCreation = function () {
 		formManipulation.hideForm();
 	});
 
-	//form manipulations start
+	//project form manipulations start
 	let formManipulation = {
 		formWrapper: document.querySelector(".pop-up_project_window"),
 		showForm() {
@@ -45,7 +45,7 @@ const projectCreation = function () {
 			return formValues;
 		},
 	};
-	//form manipulations end
+	//project form manipulations end
 
 	class Project {
 		constructor(name) {
@@ -76,6 +76,130 @@ const projectCreation = function () {
 			//Добавляю PROJECT to LOCALSTORAGE
 		}
 	}
+
+	let purposesManipulation = {
+		serializeForm(formNode) {
+			const { elements } = formNode;
+			let formValues = Array.from(elements)
+				.filter((item) => !!item.name)
+				.map(function (element) {
+					const { name, value } = element;
+					return { name, value };
+				});
+			return formValues;
+		},
+		deletePurpose(purpose) {
+			//DOMpurpose - это ДОМ элемент этой цели
+			//purpose - это объект с целью
+			let mainSide = document.querySelector(".main_side");
+			let deleteBtn = purpose.DOM.querySelector(".trash");
+			deleteBtn.addEventListener("click", function () {
+				mainSide.removeChild(purpose.DOM); //удаляю ДОМ-узел цели
+				for (let i = 0; i < sharedData.projects.length; i++) {
+					if (sharedData.projects[i].isActive == true) {
+						let index = sharedData.projects[i].purposes.indexOf(purpose);
+						if (index !== -1) {
+							sharedData.projects[i].purposes.splice(index, 1); //удаляю цель из массива
+							//УДАЛЕНИЕ ЦЕЛИ ИЗ ЛОКАЛСТОРАГЕ
+							var projectsStorage = localStorage.getItem("projects");
+							var projects = JSON.parse(projectsStorage);
+							projects.forEach(function (project) {
+								if (deepEqualObjects(project, sharedData.projects[i])) {
+									//нашла совпадающий проект +
+									project.purposes.forEach(function (storagePurpose) {
+										if (deepEqualObjects(storagePurpose, purpose)) {
+											//нашла совпавшую цель +
+											project.purposes.splice(index, 1); //yaay, она удаляется
+										}
+									});
+									localStorage.setItem("projects", JSON.stringify(projects));
+								}
+							});
+							//УДАЛЕНИЕ ЦЕЛИ ИЗ ЛОКАЛСТОРАГЕ
+						}
+					}
+				}
+			});
+		},
+
+		changePurpose(purpose) {
+			let changeBtn = purpose.DOM.querySelector(".change");
+			changeBtn.addEventListener("click", function () {
+				let purposeWindow = document.querySelector(".pop-up_purpose_window");
+
+				purposeWindow.style.display = "flex";
+				let form = document.querySelector("#purposeForm");
+				form.addEventListener("submit", function (event) {
+					event.preventDefault();
+					let formValue = purposesManipulation.serializeForm(form);
+					//сделать цикл по целям из sharedData и найти аналогичную цель
+					//сделать цикл по целям из localStorage и найти аналогичную цель
+					let localStoragePurpose;
+					let indexOfProject;
+
+					var projectsStorage = localStorage.getItem("projects");
+					var storageProjects = JSON.parse(projectsStorage);
+					// for (let i = 0; i < storageProjects.length; i++) {
+					// 	storageProjects[i].purposes.forEach(function (purp) {
+					// 		if (deepEqualObjects(purp, purpose)) {
+					// 			localStoragePurpose = purp;
+					// 			console.log(purp, purpose);
+					// 			indexOfProject = i;
+					// 			//по хорошему бы просто найти индекс proj
+					// 			//а внутри его purposes заменить совпавшую цель на нужную
+					// 		}
+					// 	});
+					// }
+					// console.log(storageProjects[indexOfProject]);
+
+					purpose.title = formValue[0].value;
+					purpose.deadline = formValue[1].value;
+					purpose.details = formValue[2].value;
+					purpose.priority = formValue[3].value;
+					//changing the DOM of purpose
+
+					let title = purpose.DOM.querySelector("#title_text");
+					title.textContent = formValue[0].value;
+					let deadline = purpose.DOM.querySelector(".deadline");
+					deadline.textContent = formValue[1].value;
+					let details = purpose.DOM.querySelector(
+						".description_side p:nth-child(2)"
+					);
+					details.textContent = formValue[2].value;
+					let priority = purpose.DOM.querySelector(
+						".priority_side p:nth-child(2)"
+					);
+					priority.textContent = formValue[3].value;
+
+					console.log("hui1 ", storageProjects);
+					console.log("hui2 ", sharedData.projects); //тут кажется не надо менять
+
+					//changing the DOM of purpose is done
+
+					// var index =
+					// 	storageProjects[indexOfProject].purposes.indexOf(
+					// 		localStoragePurpose
+					// 	);
+
+					// if (index !== -1) {
+					// 	// Удалить элемент elem из массива
+					// 	storageProjects[indexOfProject].purposes.splice(index, 1);
+					// 	// Вставить элемент elem2 на место удаленного elem
+					// 	storageProjects[indexOfProject].purposes.splice(index, 0, purpose);
+					// 	console.log("horrayyy");
+					// 	console.log(storageProjects[indexOfProject]);
+					// }
+
+					//не забудь обновить локалстораге
+					//че за мистика блять.. почему localStorage и storageProjects САМИ обновляются..
+
+					//эта цель должна попасть в sharedData вместо аналогичной прошлой
+					//эта цель должна попасть в localStorage вместо аналогичной прошлой
+					//поменять некоторые DOM-элементы у цели +
+				});
+			});
+		},
+	};
 
 	let projectManipulation = {
 		createProject(valueFromForm) {
@@ -148,44 +272,8 @@ const projectCreation = function () {
 					//помещаю в sharedData цели из localStorage
 					sharedDataProj.purposes.push(purpose);
 					purpose.DOM = purposeDOMCreation(purpose);
-					//добавить возможность изменения цели
-					function DeletePurpose(purpose) {
-						//DOMpurpose - это ДОМ элемент этой цели
-						//purpose - это объект с целью
-						let mainSide = document.querySelector(".main_side");
-						let deleteBtn = purpose.DOM.querySelector(".trash");
-						deleteBtn.addEventListener("click", function () {
-							mainSide.removeChild(purpose.DOM); //удаляю ДОМ-узел цели
-							for (let i = 0; i < sharedData.projects.length; i++) {
-								if (sharedData.projects[i].isActive == true) {
-									let index = sharedData.projects[i].purposes.indexOf(purpose);
-									if (index !== -1) {
-										sharedData.projects[i].purposes.splice(index, 1); //удаляю цель из массива
-										//УДАЛЕНИЕ ЦЕЛИ ИЗ ЛОКАЛСТОРАГЕ
-										var projectsStorage = localStorage.getItem("projects");
-										var projects = JSON.parse(projectsStorage);
-										projects.forEach(function (project) {
-											if (deepEqualObjects(project, sharedData.projects[i])) {
-												//нашла совпадающий проект +
-												project.purposes.forEach(function (storagePurpose) {
-													if (deepEqualObjects(storagePurpose, purpose)) {
-														//нашла совпавшую цель +
-														project.purposes.splice(index, 1); //yaay, она удаляется
-													}
-												});
-												localStorage.setItem(
-													"projects",
-													JSON.stringify(projects)
-												);
-											}
-										});
-										//УДАЛЕНИЕ ЦЕЛИ ИЗ ЛОКАЛСТОРАГЕ
-									}
-								}
-							}
-						});
-					}
-					DeletePurpose(purpose);
+					purposesManipulation.changePurpose(purpose);
+					purposesManipulation.deletePurpose(purpose);
 				});
 				toggleManiplation.openToggle(toggleImg, projectList, proj);
 			});

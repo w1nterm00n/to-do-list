@@ -15,6 +15,7 @@ const purposesCreation = function () {
 		let valueFromForm = formManipulation.serializeForm(form);
 
 		if (currentPurpose) {
+			//возможно проблема тут!!!!
 			purpose = currentPurpose;
 			//удалила прошлый ДОМ-узел
 			let mainSide = document.querySelector(".main_side");
@@ -25,6 +26,7 @@ const purposesCreation = function () {
 			console.log(sharedData.projects); //значения в объекте цели изменились
 			currentPurpose = null;
 		} else {
+			console.log("ohh i messed here!");
 			purpose = purposeCreation(valueFromForm);
 			purpose.DOM = purposeDOMCreation(purpose);
 		}
@@ -156,7 +158,6 @@ const purposesCreation = function () {
 					}
 				}
 			}
-			console.log(sharedData.projects);
 		});
 	};
 
