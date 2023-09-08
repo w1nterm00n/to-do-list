@@ -184,12 +184,14 @@ const projectCreation = function () {
 			});
 		},
 		alwaysOpenFirstProject() {
-			//по дефолту всегда открыт 1 проект
+			//чтобы по дефолту всегда открыт первый проект
 			let firstProject = sharedData.projects[0];
 			let projectList = document.querySelector(".project_list");
 			let toggleImg = projectList.querySelector(".toggle");
 			toggleManiplation.openToggle(toggleImg, projectList, firstProject);
-			//сделать чтобы сам тоггл при этом был как кликнут
+			let toggle = document.querySelector(".toggle");
+			toggle.click();
+			toggle.click();
 		},
 	};
 
