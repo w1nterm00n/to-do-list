@@ -47,6 +47,7 @@
   display: flex;
   gap: 30px;
   flex-direction: column;
+  background-color: rgb(172, 196, 204);
 }
 .page_wrapper .projects_side .projects_list .project_list {
   padding: 12px 18px;
