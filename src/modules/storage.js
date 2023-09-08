@@ -9,9 +9,7 @@ if (!localStorage.getItem("projects")) {
 			purposes: [],
 		},
 	]);
-	console.log("hello");
 	localStorage.setItem("projects", projectsStorage);
-	console.log(localStorage);
 }
 
 //localStorage.removeItem("projects");

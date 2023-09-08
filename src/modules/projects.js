@@ -183,6 +183,14 @@ const projectCreation = function () {
 				toggleManiplation.openToggle(toggleImg, projectList, proj);
 			});
 		},
+		alwaysOpenFirstProject() {
+			//по дефолту всегда открыт 1 проект
+			let firstProject = sharedData.projects[0];
+			let projectList = document.querySelector(".project_list");
+			let toggleImg = projectList.querySelector(".toggle");
+			toggleManiplation.openToggle(toggleImg, projectList, firstProject);
+			//сделать чтобы сам тоггл при этом был как кликнут
+		},
 	};
 
 	let projectDOMCreation = function (project) {
@@ -297,6 +305,7 @@ const projectCreation = function () {
 		},
 	};
 	projectManipulation.creationOfStorageProjects();
+	projectManipulation.alwaysOpenFirstProject();
 };
 
 export { projectCreation };
