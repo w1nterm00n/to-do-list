@@ -160,22 +160,6 @@ const projectCreation = function () {
 					mainSide.removeChild(purposeNode);
 			});
 		},
-		defaultProjectCreation() {
-			this.createProject([{ value: "Default project" }]);
-			let projectList = document.querySelector(".project_list");
-			let toggleImg = projectList.querySelector(".toggle");
-			toggleManiplation.openToggle(
-				toggleImg,
-				projectList,
-				sharedData.projects[0]
-			);
-			if (!localStorage.getItem("projects")) {
-				//т.е. если "projects" в localStorage не существует - создаём "projects", чтобы не возникало бед
-				var projectsStorage = JSON.stringify(sharedData.projects);
-				localStorage.setItem("projects", projectsStorage);
-			}
-			//вот тут будет создание проектов из localStorage
-		},
 		creationOfStorageProjects() {
 			var projectsStorage = localStorage.getItem("projects");
 			var storageProjects = JSON.parse(projectsStorage);
@@ -312,8 +296,6 @@ const projectCreation = function () {
 			this.projectName.textContent = newProjectName;
 		},
 	};
-
-	//projectManipulation.defaultProjectCreation();
 	projectManipulation.creationOfStorageProjects();
 };
 

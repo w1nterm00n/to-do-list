@@ -2,8 +2,16 @@ import { sharedData } from "./sharedData.js";
 
 if (!localStorage.getItem("projects")) {
 	//т.е. если "projects" в localStorage не существует - создаём "projects"
-	var projectsStorage = JSON.stringify([]);
+	var projectsStorage = JSON.stringify([
+		{
+			name: "Default Project",
+			isActive: "true",
+			purposes: [],
+		},
+	]);
+	console.log("hello");
 	localStorage.setItem("projects", projectsStorage);
+	console.log(localStorage);
 }
 
 //localStorage.removeItem("projects");
