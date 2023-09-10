@@ -150,7 +150,7 @@
 }
 .page_wrapper .main_side .to-do-line .title_and_deadline_part .right_side {
   display: flex;
-  gap: 30px;
+  gap: 20px;
   align-items: center;
 }
 

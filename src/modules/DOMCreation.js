@@ -1,3 +1,5 @@
+import { parseISO, differenceInDays } from "date-fns";
+
 let purposeDOMCreation = function (purpose) {
 	let mainSide = document.querySelector(".main_side");
 	const toDoLine = document.querySelector(".to-do-line-closed");
@@ -7,10 +9,18 @@ let purposeDOMCreation = function (purpose) {
 
 	let title = newGoal.querySelector("#title_text");
 	title.textContent = purpose.title;
+
 	let deadline = newGoal.querySelector(".deadline");
 	deadline.textContent = purpose.deadline;
-	let toggle = newGoal.querySelector(".toggle");
+	let daysTillDeadline = newGoal.querySelector(".days_till_deadline");
+	const daysBeforeDeadline = differenceInDays(
+		parseISO(purpose.deadline), //parseISO потому что по дефолту дедлайн это строка
+		new Date()
+	);
+	daysTillDeadline.textContent = daysBeforeDeadline;
+	daysTillDeadline.style.color = "red";
 
+	let toggle = newGoal.querySelector(".toggle");
 	let isFull = false;
 	toggle.addEventListener("click", function () {
 		if (isFull === false) {
