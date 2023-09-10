@@ -1,6 +1,7 @@
 import { sharedData } from "./sharedData.js";
 import { purposeDOMCreation } from "./DOMCreation.js";
 import { deepEqualObjects } from "./storage.js";
+import { purposesCreation } from "./purposes.js";
 
 const projectCreation = function () {
 	let addProjectBtn = document.querySelector(".addProjectBtn");
@@ -179,6 +180,48 @@ const projectCreation = function () {
 					purpose.DOM = purposeDOMCreation(purpose);
 					purposesManipulation.deletePurpose(purpose);
 					purposesManipulation.changePurpose(purpose);
+
+					let checkbox = purpose.DOM.querySelector("#todo-checkbox");
+
+					///чтобы если цель isDone, после перезагрузки она правильно отображалась
+					let titleText = purpose.DOM.querySelector("#title_text");
+					storageProjects.forEach(function (proj) {
+						proj.purposes.forEach(function (storagePurpose) {
+							if (deepEqualObjects(storagePurpose, purpose)) {
+								if (storagePurpose.isDone === true) {
+									titleText.style.color = "grey";
+									titleText.style.textDecoration = "line-through";
+									checkbox.checked = true;
+								} else {
+									titleText.style.color = "black";
+									titleText.style.textDecoration = "none";
+								}
+							}
+						});
+					});
+					///чтобы если цель isDone, после перезагрузки она правильно отображалась
+
+					checkbox.addEventListener("click", function () {
+						storageProjects.forEach(function (proj) {
+							proj.purposes.forEach(function (storagePurpose) {
+								if (deepEqualObjects(storagePurpose, purpose)) {
+									if (storagePurpose.isDone === false) {
+										titleText.style.color = "grey";
+										titleText.style.textDecoration = "line-through";
+										purpose.isDone = true;
+										storagePurpose.isDone = true;
+									} else {
+										purpose.isDone = false;
+										titleText.style.color = "black";
+										titleText.style.textDecoration = "none";
+										storagePurpose.isDone = false;
+									}
+								}
+							});
+						});
+						var updatedProjectsStorage = JSON.stringify(storageProjects);
+						localStorage.setItem("projects", updatedProjectsStorage);
+					});
 				});
 				toggleManiplation.openToggle(toggleImg, projectList, proj);
 			});

@@ -116,15 +116,30 @@ const purposesCreation = function () {
 	//чтобы при нажатии на чекбокс цели текст становился серым
 	let checkboxManipulation = function (purpose) {
 		let titleText = purpose.DOM.querySelector("#title_text");
-		if (purpose.isDone === false) {
-			titleText.style.color = "grey";
-			titleText.style.textDecoration = "line-through";
-			purpose.isDone = true;
-		} else {
-			purpose.isDone = false;
-			titleText.style.color = "black";
-			titleText.style.textDecoration = "none";
-		}
+		var projectsStorage = localStorage.getItem("projects");
+		var storageProjects = JSON.parse(projectsStorage);
+
+		storageProjects.forEach(function (proj) {
+			proj.purposes.forEach(function (storagePurpose) {
+				if (deepEqualObjects(storagePurpose, purpose)) {
+					if (storagePurpose.isDone === false) {
+						titleText.style.color = "grey";
+						titleText.style.textDecoration = "line-through";
+						purpose.isDone = true;
+						storagePurpose.isDone = true;
+					} else {
+						purpose.isDone = false;
+						titleText.style.color = "black";
+						titleText.style.textDecoration = "none";
+						storagePurpose.isDone = false;
+					}
+				}
+			});
+		});
+		// Преобразую storageProjects обратно в строку JSON
+		var updatedProjectsStorage = JSON.stringify(storageProjects);
+		// Обновляю данные в localStorage
+		localStorage.setItem("projects", updatedProjectsStorage);
 	};
 
 	let purposeDelete = function (purpose) {
