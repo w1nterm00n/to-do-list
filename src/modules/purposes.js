@@ -48,6 +48,15 @@ const purposesCreation = function () {
 		title: formWrapper.querySelector(".title"),
 		submitBtn: formWrapper.querySelector("#submit_btn"),
 		formNodelist: formWrapper.querySelectorAll(".input"),
+		deadlineInput: formWrapper.querySelector("#deadline"),
+		setMinToActualDate() {
+			const currentDate = new Date();
+			const year = currentDate.getFullYear();
+			const month = (currentDate.getMonth() + 1).toString().padStart(2, "0"); // Добавляем нули, если месяц < 10
+			const day = currentDate.getDate().toString().padStart(2, "0"); // Добавляем нули, если день < 10
+			const formattedCurrentDate = `${year}-${month}-${day}`;
+			this.deadlineInput.min = formattedCurrentDate;
+		},
 		showEmptyForm() {
 			this.title.textContent = "New Form";
 			this.submitBtn.textContent = "Add";
@@ -55,6 +64,7 @@ const purposesCreation = function () {
 				input.value = "";
 			});
 			formWrapper.style.display = "flex";
+			this.setMinToActualDate();
 		},
 		showFilledForm(purpose) {
 			sharedData.currentPurpose = purpose;
@@ -77,6 +87,7 @@ const purposesCreation = function () {
 				}
 			});
 			formWrapper.style.display = "flex";
+			this.setMinToActualDate();
 		},
 		hideForm() {
 			formWrapper.style.display = "none";
