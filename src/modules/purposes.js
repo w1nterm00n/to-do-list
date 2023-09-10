@@ -15,7 +15,6 @@ const purposesCreation = function () {
 		let valueFromForm = formManipulation.serializeForm(form);
 
 		if (sharedData.currentPurpose) {
-			//возможно проблема тут!!!!
 			purpose = sharedData.currentPurpose;
 			//удалила прошлый ДОМ-узел
 			let mainSide = document.querySelector(".main_side");
@@ -23,10 +22,8 @@ const purposesCreation = function () {
 			//удалила прошлый ДОМ-узел
 			let updatedPurpose = purposeUpdate(valueFromForm);
 			purpose.DOM = purposeDOMCreation(updatedPurpose); // создаст новый ДОМ-узел
-			console.log(sharedData.projects); //значения в объекте цели изменились
 			sharedData.currentPurpose = null;
 		} else {
-			console.log("ohh i messed here!");
 			purpose = purposeCreation(valueFromForm);
 			purpose.DOM = purposeDOMCreation(purpose);
 		}
@@ -63,6 +60,22 @@ const purposesCreation = function () {
 			sharedData.currentPurpose = purpose;
 			this.title.textContent = "Change Form";
 			this.submitBtn.textContent = "Change";
+			this.formNodelist.forEach(function (input) {
+				switch (input.id) {
+					case "title":
+						input.value = purpose.title;
+						break;
+					case "deadline":
+						input.value = purpose.deadline;
+						break;
+					case "details":
+						input.value = purpose.details;
+						break;
+					case "priority":
+						input.value = purpose.priority;
+						break;
+				}
+			});
 			formWrapper.style.display = "flex";
 		},
 		hideForm() {

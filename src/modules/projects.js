@@ -116,8 +116,33 @@ const projectCreation = function () {
 			let changeBtn = purpose.DOM.querySelector(".change");
 
 			changeBtn.addEventListener("click", function () {
-				let purposeWindow = document.querySelector(".pop-up_purpose_window");
-				purposeWindow.style.display = "flex";
+				let formWrapper = document.querySelector(".pop-up_purpose_window");
+				formWrapper.style.display = "flex";
+
+				// делаю чтобы форма с изменением цели отображалась как надо
+				let title = formWrapper.querySelector(".title");
+				let submitBtn = formWrapper.querySelector("#submit_btn");
+				let formNodelist = formWrapper.querySelectorAll(".input");
+
+				title.textContent = "Change Form";
+				submitBtn.textContent = "Change";
+				formNodelist.forEach(function (input) {
+					switch (input.id) {
+						case "title":
+							input.value = purpose.title;
+							break;
+						case "deadline":
+							input.value = purpose.deadline;
+							break;
+						case "details":
+							input.value = purpose.details;
+							break;
+						case "priority":
+							input.value = purpose.priority;
+							break;
+					}
+				});
+				// делаю чтобы форма с изменением цели отображалась как надо
 				sharedData.currentPurpose = purpose;
 			});
 		},
