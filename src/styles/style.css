@@ -222,4 +222,19 @@
   margin-top: 2px;
   margin-bottom: 20px;
   font-size: 18px;
+}
+.pop-up_purpose_window .priority_div {
+  display: flex;
+  width: -moz-available;
+  align-items: baseline;
+  gap: 5px;
+  margin-left: 20px;
+}
+.pop-up_purpose_window .priority_div #priority {
+  background: #A68B5C;
+  padding: 6px 8px;
+  color: #FFF;
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 20px;
 }/*# sourceMappingURL=style.css.map */

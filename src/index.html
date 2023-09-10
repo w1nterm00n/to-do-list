@@ -92,9 +92,14 @@
                     <label>
                     Details:<textarea id="details" class="input" name="details"></textarea>
                     </label>
-                    <label>
-                        <input type="text" id="priority" class="input" name="priority" placeholder="Priority:" required><br>
-                    </label>
+                    <div class="priority_div">
+                        <label for="priority">Priority:</label>
+                            <select id="priority" name="priority">
+                            <option value="Low" selected>Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
                     <button type="submit" id="submit_btn">Add</button>
                 </form>
             </div>

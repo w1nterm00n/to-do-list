@@ -232,5 +232,20 @@
         margin-bottom: 20px;
         font-size: 18px;
     }
+    .priority_div{
+        display: flex;
+        width: -moz-available;
+        align-items: baseline;
+        gap: 5px;
+        margin-left: 20px;
+        #priority{
+            background: #A68B5C;
+            padding: 6px 8px;
+            color: #FFF;
+            font-size: 24px;
+            font-weight: 500; 
+            margin-bottom: 20px;
+        }
+    }
 }
 //POP-UP WINDOWS END
