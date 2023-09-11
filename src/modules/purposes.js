@@ -40,6 +40,7 @@ const purposesCreation = function () {
 	let closeBtn = document.querySelector(".closePurposetBtn");
 	closeBtn.addEventListener("click", function () {
 		formManipulation.hideForm();
+		sharedData.currentPurpose = null;
 	});
 
 	let formWrapper = document.querySelector(".pop-up_purpose_window");
@@ -118,7 +119,6 @@ const purposesCreation = function () {
 		for (let i = 0; i < sharedData.projects.length; i++) {
 			if (sharedData.projects[i].isActive == true) {
 				sharedData.projects[i].purposes.push(purpose);
-
 				var projectsStorage = localStorage.getItem("projects");
 				var projects = JSON.parse(projectsStorage);
 				projects.forEach(function (project) {
